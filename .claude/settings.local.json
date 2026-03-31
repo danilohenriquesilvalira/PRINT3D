@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:makerworld.com)",
+      "WebFetch(domain:mauser.pt)",
+      "Bash(curl -s -L https://mauser.pt/ --user-agent \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\")",
+      "Bash(curl -s -L \"https://mauser.pt/jakarta.faces.resource/css/layout-light.css.xhtml?ln=mauser-layout&version=1.0.0-2815\" --user-agent \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\")",
+      "Bash(curl -s -L \"https://mauser.pt/jakarta.faces.resource/css/layout-light.css.xhtml?ln=mauser-layout&version=1.0.0-2815\")",
+      "Bash(curl -s \"https://mauser.pt/jakarta.faces.resource/css/layout-light.css.xhtml?ln=mauser-layout&version=1.0.0-2815\")"
+    ]
+  }
+}
