@@ -1,262 +1,57 @@
 import ProductListSec from "@/components/common/ProductListSec";
 import Brands from "@/components/homepage/Brands";
 import Header from "@/components/homepage/Header";
+import { createServerClient } from "@/lib/supabase/server";
 import { Product } from "@/types/product.types";
-import { Review } from "@/types/review.types";
 
-export const newArrivalsData: Product[] = [
-  {
-    id: 1,
-    title: "Vaso Espiral Geométrico",
-    srcUrl: "/images/pic1.png",
-    gallery: ["/images/pic1.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 15,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: "Suporte para Auscultadores Gaming",
-    srcUrl: "/images/pic2.png",
-    gallery: ["/images/pic2.png"],
-    price: 20,
-    discount: {
-      amount: 0,
-      percentage: 15,
-    },
-    rating: 4.0,
-  },
-  {
-    id: 3,
-    title: "Dragão Articulado Flexível",
-    srcUrl: "/images/pic3.png",
-    gallery: ["/images/pic3.png"],
-    price: 14,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.8,
-  },
-  {
-    id: 4,
-    title: "Lampada Litofane Personalizada",
-    srcUrl: "/images/pic4.png",
-    gallery: ["/images/pic4.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 39,
-    discount: {
-      amount: 0,
-      percentage: 10,
-    },
-    rating: 5.0,
-  },
+// Fallback estático enquanto o Supabase não tiver dados
+const fallbackProducts: Product[] = [
+  { id: 1, title: "Vaso Espiral Geométrico", srcUrl: "/images/pic1.png", gallery: ["/images/pic1.png", "/images/pic10.png", "/images/pic11.png"], price: 15, discount: { amount: 0, percentage: 0 }, rating: 4.5 },
+  { id: 2, title: "Suporte para Auscultadores Gaming", srcUrl: "/images/pic2.png", gallery: ["/images/pic2.png"], price: 20, discount: { amount: 0, percentage: 15 }, rating: 4.0 },
+  { id: 3, title: "Dragão Articulado Flexível", srcUrl: "/images/pic3.png", gallery: ["/images/pic3.png"], price: 14, discount: { amount: 0, percentage: 0 }, rating: 4.8 },
+  { id: 4, title: "Lampada Litofane Personalizada", srcUrl: "/images/pic4.png", gallery: ["/images/pic4.png", "/images/pic10.png", "/images/pic11.png"], price: 39, discount: { amount: 0, percentage: 10 }, rating: 5.0 },
+  { id: 5, title: "Pack Animais Articulados (5 peças)", srcUrl: "/images/pic5.png", gallery: ["/images/pic5.png", "/images/pic10.png", "/images/pic11.png"], price: 20, discount: { amount: 0, percentage: 20 }, rating: 5.0 },
+  { id: 6, title: "Porta-Velas Geométrico", srcUrl: "/images/pic6.png", gallery: ["/images/pic6.png"], price: 10, discount: { amount: 0, percentage: 0 }, rating: 4.5, stock: false },
+  { id: 7, title: "Organizador de Cabos USB", srcUrl: "/images/pic7.png", gallery: ["/images/pic7.png"], price: 8, discount: { amount: 0, percentage: 0 }, rating: 4.0 },
+  { id: 8, title: "Vaso de Parede Minimalista", srcUrl: "/images/pic8.png", gallery: ["/images/pic8.png"], price: 13, discount: { amount: 0, percentage: 0 }, rating: 4.5 },
+  { id: 12, title: "Suporte Multiuso para Secretária", srcUrl: "/images/pic12.png", gallery: ["/images/pic12.png"], price: 25, discount: { amount: 0, percentage: 20 }, rating: 4.0 },
+  { id: 13, title: "Escultura Abstrata de Mesa", srcUrl: "/images/pic13.png", gallery: ["/images/pic13.png"], price: 19, discount: { amount: 0, percentage: 0 }, rating: 3.5 },
+  { id: 14, title: "Cortador de Bolachas Temático", srcUrl: "/images/pic14.png", gallery: ["/images/pic14.png"], price: 9, discount: { amount: 0, percentage: 0 }, rating: 4.5 },
+  { id: 15, title: "Miniatura RPG Pack 3 Figuras", srcUrl: "/images/pic15.png", gallery: ["/images/pic15.png"], price: 27, discount: { amount: 0, percentage: 15 }, rating: 5.0 },
 ];
 
-export const topSellingData: Product[] = [
-  {
-    id: 5,
-    title: "Pack Animais Articulados (5 peças)",
-    srcUrl: "/images/pic5.png",
-    gallery: ["/images/pic5.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 20,
-    discount: {
-      amount: 0,
-      percentage: 20,
-    },
-    rating: 5.0,
-  },
-  {
-    id: 6,
-    title: "Porta-Velas Geométrico",
-    srcUrl: "/images/pic6.png",
-    gallery: ["/images/pic6.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 10,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-    stock: false,
-  },
-  {
-    id: 7,
-    title: "Organizador de Cabos USB",
-    srcUrl: "/images/pic7.png",
-    gallery: ["/images/pic7.png"],
-    price: 8,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.0,
-  },
-  {
-    id: 8,
-    title: "Vaso de Parede Minimalista",
-    srcUrl: "/images/pic8.png",
-    gallery: ["/images/pic8.png"],
-    price: 13,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-];
 
-export const destaquesData: Product[] = [
-  {
-    id: 4,
-    title: "Lampada Litofane Personalizada",
-    srcUrl: "/images/pic4.png",
-    gallery: ["/images/pic4.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 39,
+function mapRow(p: Record<string, unknown>): Product {
+  return {
+    id: p.id as number,
+    title: p.title as string,
+    srcUrl: p.src_url as string,
+    gallery: (p.gallery as string[]) ?? [],
+    price: Number(p.price),
     discount: {
-      amount: 0,
-      percentage: 10,
+      amount: Number(p.discount_amount),
+      percentage: Number(p.discount_percentage),
     },
-    rating: 5.0,
-  },
-  {
-    id: 3,
-    title: "Dragão Articulado Flexível",
-    srcUrl: "/images/pic3.png",
-    gallery: ["/images/pic3.png"],
-    price: 14,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.8,
-    stock: false,
-  },
-  {
-    id: 15,
-    title: "Miniatura RPG Pack 3 Figuras",
-    srcUrl: "/images/pic15.png",
-    gallery: ["/images/pic15.png"],
-    price: 27,
-    discount: {
-      amount: 0,
-      percentage: 15,
-    },
-    rating: 5.0,
-  },
-  {
-    id: 5,
-    title: "Pack Animais Articulados (5 peças)",
-    srcUrl: "/images/pic5.png",
-    gallery: ["/images/pic5.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 20,
-    discount: {
-      amount: 0,
-      percentage: 20,
-    },
-    rating: 5.0,
-  },
-];
+    rating: Number(p.rating),
+    stock: p.stock as boolean | undefined,
+    category: p.category as string | undefined,
+    isFeatured: p.is_featured as boolean | undefined,
+    isNew: p.is_new as boolean | undefined,
+    isTopSelling: p.is_top_selling as boolean | undefined,
+  };
+}
 
-export const relatedProductData: Product[] = [
-  {
-    id: 12,
-    title: "Suporte Multiuso para Secretária",
-    srcUrl: "/images/pic12.png",
-    gallery: ["/images/pic12.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 25,
-    discount: {
-      amount: 0,
-      percentage: 20,
-    },
-    rating: 4.0,
-  },
-  {
-    id: 13,
-    title: "Escultura Abstrata de Mesa",
-    srcUrl: "/images/pic13.png",
-    gallery: ["/images/pic13.png", "/images/pic10.png", "/images/pic11.png"],
-    price: 19,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 3.5,
-  },
-  {
-    id: 14,
-    title: "Cortador de Bolachas Temático",
-    srcUrl: "/images/pic14.png",
-    gallery: ["/images/pic14.png"],
-    price: 9,
-    discount: {
-      amount: 0,
-      percentage: 0,
-    },
-    rating: 4.5,
-  },
-  {
-    id: 15,
-    title: "Miniatura RPG Pack 3 Figuras",
-    srcUrl: "/images/pic15.png",
-    gallery: ["/images/pic15.png"],
-    price: 27,
-    discount: {
-      amount: 0,
-      percentage: 15,
-    },
-    rating: 5.0,
-  },
-];
+async function getProducts() {
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase.from("products").select("*").order("id");
+    if (error || !data?.length) return fallbackProducts;
+    return data.map(mapRow);
+  } catch {
+    return fallbackProducts;
+  }
+}
 
-export const reviewsData: Review[] = [
-  {
-    id: 1,
-    user: "Joao M.",
-    content:
-      `"Fiquei impressionado com a qualidade das pecas! O vaso espiral chegou perfeito, sem qualquer falha de impressao. O acabamento e impecavel. Ja recomendei a toda a familia!"`,
-    rating: 5,
-    date: "Janeiro 14, 2025",
-  },
-  {
-    id: 2,
-    user: "Ana S.",
-    content: `"O suporte para auscultadores e exatamente como nas fotos. Muito resistente e com um acabamento incrivel. Ja encomendei mais dois para oferecer como prenda. Entrega super rapida para Espanha!"`,
-    rating: 5,
-    date: "Janeiro 20, 2025",
-  },
-  {
-    id: 3,
-    user: "Carlos R.",
-    content: `"Comprei o dragao articulado para o meu filho e ele adorou. A qualidade e surpreendente para o preco -- cada junta mexe na perfeicao. Sem duvida voltarei a comprar!"`,
-    rating: 5,
-    date: "Fevereiro 3, 2025",
-  },
-  {
-    id: 4,
-    user: "Mariana P.",
-    content: `"A lampada litofane foi o presente de aniversario perfeito para a minha mae. Ela ficou em lagrimas quando a viu acesa com a foto dela. Qualidade incrivel, super recomendado!"`,
-    rating: 5,
-    date: "Fevereiro 10, 2025",
-  },
-  {
-    id: 5,
-    user: "Pedro L.",
-    content: `"Ja e a terceira vez que compro aqui. Os produtos sao sempre de qualidade excelente e o envio e muito rapido. O pack de animais articulados e simplesmente espetacular!"`,
-    rating: 5,
-    date: "Marco 5, 2025",
-  },
-  {
-    id: 6,
-    user: "Sofia D.",
-    content: `"Os animais articulados sao lindissimos! Comprei o pack completo e cada um tem detalhes fantasticos. O polvo e o meu favorito. Excelente relacao qualidade-preco!"`,
-    rating: 5,
-    date: "Marco 18, 2025",
-  },
-];
-
-// Ícones vermelhos
 const iconDestaques = (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF0000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M2.9668 10.4961V15.4979C2.9668 18.3273 2.9668 19.742 3.84548 20.621C4.72416 21.5001 6.13837 21.5001 8.9668 21.5001H14.9668C17.7952 21.5001 19.2094 21.5001 20.0881 20.621C20.9668 19.742 20.9668 18.3273 20.9668 15.4979V10.4961" />
@@ -272,7 +67,6 @@ const iconNovidades = (
   </svg>
 );
 
-// Medalha #1 — troféu moderno
 const iconMaisProcurados = (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF0000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
@@ -284,35 +78,31 @@ const iconMaisProcurados = (
   </svg>
 );
 
-export default function Home() {
+export default async function Home() {
+  const allProducts = await getProducts();
+
+  const destaquesData = allProducts.filter((p) => p.isFeatured).slice(0, 4);
+  const newArrivalsData = allProducts.filter((p) => p.isNew).slice(0, 4);
+  const topSellingData = allProducts.filter((p) => p.isTopSelling).slice(0, 4);
+
+  // Fallback se as flags não estiverem definidas
+  const destaques = destaquesData.length ? destaquesData : allProducts.slice(0, 4);
+  const novidades = newArrivalsData.length ? newArrivalsData : allProducts.slice(0, 4);
+  const maisProcurados = topSellingData.length ? topSellingData : allProducts.slice(4, 8);
+
   return (
     <div className="bg-[#F2F0F1]">
       <Header />
       <Brands />
       <main className="py-8 sm:py-10">
         <div className="mb-7 sm:mb-9">
-          <ProductListSec
-            title="DESTAQUES"
-            data={destaquesData}
-            viewAllLink="/shop"
-            icon={iconDestaques}
-          />
+          <ProductListSec title="DESTAQUES" data={destaques} viewAllLink="/shop" icon={iconDestaques} />
         </div>
         <div className="mb-7 sm:mb-9">
-          <ProductListSec
-            title="NOVIDADES"
-            data={newArrivalsData}
-            viewAllLink="/shop#new-arrivals"
-            icon={iconNovidades}
-          />
+          <ProductListSec title="NOVIDADES" data={novidades} viewAllLink="/shop#new-arrivals" icon={iconNovidades} />
         </div>
         <div className="mb-7 sm:mb-9">
-          <ProductListSec
-            title="OS MAIS PROCURADOS"
-            data={topSellingData}
-            viewAllLink="/shop#top-selling"
-            icon={iconMaisProcurados}
-          />
+          <ProductListSec title="OS MAIS PROCURADOS" data={maisProcurados} viewAllLink="/shop#top-selling" icon={iconMaisProcurados} />
         </div>
       </main>
     </div>

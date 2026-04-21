@@ -19,14 +19,14 @@ import {
 } from "@/components/ui/accordion";
 import Image from "next/image";
 import CartBtn from "./CartBtn";
-import { 
-  Menu, 
-  Search, 
-  User, 
-  ChevronRight, 
-  ShoppingCart, 
-  Percent, 
-  Sparkles, 
+import AuthBtn from "./AuthBtn";
+import {
+  Menu,
+  Search,
+  ChevronRight,
+  ShoppingCart,
+  Percent,
+  Sparkles,
   Zap,
   Home,
   Gamepad2,
@@ -173,12 +173,7 @@ const TopNavbar = () => {
             </div>
 
             <div className="flex items-center gap-2 lg:gap-[16px]">
-              <Link 
-                href="/#signin" 
-                className="flex items-center justify-center w-[40px] lg:w-[44px] h-[40px] lg:h-[44px] bg-black lg:bg-[#F3F3F3] text-white lg:text-black lg:hover:bg-black lg:hover:text-white rounded-full transition-all duration-150 active:scale-95 group"
-              >
-                <User size={18} className="lg:group-hover:scale-110 transition-transform duration-150" />
-              </Link>
+              <AuthBtn />
               <div className="relative w-[40px] lg:w-[44px] h-[40px] lg:h-[44px] flex items-center justify-center bg-[#F3F3F3] rounded-full hover:bg-black text-black hover:text-white transition-all duration-150 cursor-pointer group active:scale-95">
                 <CartBtn />
               </div>

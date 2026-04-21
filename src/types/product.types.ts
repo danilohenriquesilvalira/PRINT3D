@@ -11,5 +11,10 @@ export type Product = {
   price: number;
   discount: Discount;
   rating: number;
-  stock?: boolean; // true = em stock, false = sem stock, undefined = em stock (padrão)
+  stock?: boolean;
+  category?: string;
+  description?: string;
+  isFeatured?: boolean;
+  isNew?: boolean;
+  isTopSelling?: boolean;
 };
